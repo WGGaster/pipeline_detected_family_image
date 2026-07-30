@@ -12,11 +12,8 @@ def get_image_files(src_dir: Path) -> list[Path]:
     ]
 
 def download_images_blur_dataset(train_count: int = 250, val_count: int = 100, seed: int = 42):
-    # 1. Скачиваем датасет
     root_dir = Path(kagglehub.dataset_download("kwentar/blur-dataset"))
     print(f"Датасет скачан в: {root_dir}")
-
-    # 2. Собираем файлы из реальных папок датасета
     sharp_dir = root_dir / "sharp"
     defocus_dir = root_dir / "defocused_blurred"
     motion_dir = root_dir / "motion_blurred"
@@ -36,10 +33,8 @@ def download_images_blur_dataset(train_count: int = 250, val_count: int = 100, s
             f"а найдено {len(defocus_files) + len(motion_files)}."
         )
 
-    # Объединяем оба типа размытия в один класс
     blur_files = defocus_files + motion_files
 
-    # 3. Фиксированный сплит: первые n — train, следующие m — val (после перемешивания)
     random.seed(seed)
     random.shuffle(sharp_files)
     random.shuffle(blur_files)
@@ -50,18 +45,14 @@ def download_images_blur_dataset(train_count: int = 250, val_count: int = 100, s
     blur_train = blur_files[:train_count]
     blur_val = blur_files[train_count:train_count + val_count]
 
-    # 4. Настраиваем пути
     base_path = Path("./data")
 
-    # Папки train
     train_blur_folder = base_path / "train" / "blur_dataset" / 'blur'
     train_sharp_folder = base_path / "train" / "blur_dataset" / 'sharp'
 
-    # Папки val
     val_blur_folder = base_path / "val" / "blur_dataset" / 'blur'
     val_sharp_folder = base_path / "val" / "blur_dataset" / 'sharp'
 
-    # Создаём папки, если их нет
     train_blur_folder.mkdir(parents=True, exist_ok=True)
     train_sharp_folder.mkdir(parents=True, exist_ok=True)
     val_blur_folder.mkdir(parents=True, exist_ok=True)
@@ -73,7 +64,6 @@ def download_images_blur_dataset(train_count: int = 250, val_count: int = 100, s
     print(f"  Val blur: {val_blur_folder}")
     print(f"  Val sharp: {val_sharp_folder}")
 
-    # 5. Копируем файлы
     def copy_files(files: list[Path], dst_dir: Path) -> int:
         count = 0
         for f in files:
