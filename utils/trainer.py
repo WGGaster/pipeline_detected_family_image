@@ -119,7 +119,7 @@ def train_model(model, train_loader, val_loader, path_save, criterion, optimizer
         break
       print('--------------------')
   
-
+  path_save.parent.mkdir(parents=True, exist_ok=True)
   model.load_state_dict(early_stopping.best_weights)
   torch.save(model.state_dict(), path_save)
   return {
@@ -128,4 +128,3 @@ def train_model(model, train_loader, val_loader, path_save, criterion, optimizer
       'val loss': val_loss_list,
       'val accuracy': val_acc_list
   }
-

@@ -1,5 +1,7 @@
-data/
-models/
+data/instance/**.json
+data/train/
+data/val/
+data/test
 result/
 pushing
 utils/__pycache__/

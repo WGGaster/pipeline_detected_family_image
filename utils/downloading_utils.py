@@ -67,6 +67,12 @@ def get_ids_img(annotations, category, without_category):
 
 def get_filenames_and_path_img(images, ids_img_category, size_sample):
   dict_id_image = {image['id']: (image['file_name'], image['coco_url']) for image in images}
+  count_img =  len(dict_id_image)
+  if size_sample > count_img:
+    size_sample = count_img
+    print('Размер sample вышел больше количества картинок текущей категории.')
+    print('Будут отобраны все и изображения')
+  size_sample = min(size_sample, len(dict_id_image))
   return random.sample([dict_id_image[id] for id in ids_img_category], size_sample)
 
 def download_images_from_coco_2017(ann_path, out_dir, id_category, size_sample=1000, without_category=False):
